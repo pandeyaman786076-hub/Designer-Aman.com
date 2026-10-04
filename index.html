@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15th August • Swatantrata Diwas Nostalgia</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --saffron: #ff9933;
+      --white: #ffffff;
+      --green: #138808;
+      --navy: #000088;
+      --gold: #f59e0b;
+      --dark: #070a12;
+      --card-bg: rgba(15, 23, 42, 0.75);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: var(--dark);
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    #skyCanvas {
+      position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1;
+    }
+    .app-container {
+      position: relative; z-index: 5; display: flex; flex-direction: column; min-height: 100vh; padding-bottom: 90px;
+    }
+    .header {
+      position: sticky; top: 0; z-index: 40; background: rgba(7, 10, 18, 0.88);
+      backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 24px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-title { font-family: 'Rozha One', serif; font-size: 1.2rem; color: #ffffff; }
+    .badge {
+      font-size: 11px; padding: 2px 8px; border-radius: 9999px;
+      background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fcd34d;
+    }
+    .actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      padding: 8px 16px; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; transition: 0.2s;
+    }
+    .btn-shower { background: linear-gradient(135deg, rgba(255,153,51,0.25), rgba(19,136,8,0.25)); color: #fef08a; border: 1px solid rgba(245,158,11,0.4); }
+    .btn-kite { background: #1e293b; color: white; border: 1px solid rgba(255,255,255,0.1); }
+    .hero {
+      text-align: center; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
+    .chakra {
+      width: 130px; height: 130px; border-radius: 50%; animation: spinChakra 24s linear infinite;
+      filter: drop-shadow(0 0 12px rgba(0, 70, 200, 0.6));
+    }
+    @keyframes spinChakra { to { transform: rotate(360deg); } }
+    .title {
+      font-size: clamp(2.4rem, 6vw, 4rem); font-family: 'Rozha One', serif;
+      background: linear-gradient(180deg, #ff9933 10%, #ffffff 50%, #138808 90%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle { font-size: 1.2rem; color: #cbd5e1; font-family: 'Yatra One', cursive; }
+    .cta-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 10px; }
+    .btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); color: white; box-shadow: 0 4px 14px rgba(249,115,22,0.4); }
+    .btn-green { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .btn-amber { background: #1e293b; color: #fcd34d; border: 1px solid #f59e0b; }
+    
+    /* Memory Cards */
+    .memories { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .card { background: var(--card-bg); border: 1px solid rgba(245,158,11,0.2); border-radius: 18px; padding: 22px; backdrop-filter: blur(12px); }
+    .card h4 { font-family: 'Rozha One', serif; font-size: 1.15rem; margin: 8px 0; color: #ffffff; }
+    .card p { font-size: 13px; color: #cbd5e1; }
+
+    /* Bottom Player */
+    .player-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(11, 15, 25, 0.92); backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .player-title { font-weight: bold; font-size: 13px; }
+    .player-sub { font-size: 11px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <canvas id="skyCanvas"></canvas>
+
+  <div class="app-container">
+    <header class="header">
+      <div class="brand">
+        <h1 class="brand-title">15th AUGUST</h1>
+        <span class="badge">15 August 2027</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-shower" onclick="showerFlowers()">🌸 पुष्प वर्षा</button>
+        <button class="btn btn-kite" onclick="launchKite()">🪁 पतंग: <b id="kiteCount">5</b></button>
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="chakra">
+        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#000088" stroke-width="4.5" />
+          <circle cx="50" cy="50" r="8" fill="#000088" />
+          <circle cx="50" cy="50" r="3" fill="#ffffff" />
+          <g id="chakraSpokes"></g>
+        </svg>
+      </div>
+
+      <h2 class="title">स्वतंत्रता दिवस 2027 Designed By:- Aman Pandey </h2>
+      <p class="subtitle">तिरंगे की शान, शहीदों का बलिदान और बचपन की वो पावन सुबह</p>
+
+      <div class="cta-group">
+        <button class="btn btn-primary" onclick="launchKite()">🪁 पतंग उड़ाएं (Fly Kite)</button>
+        <button class="btn btn-green" onclick="playFlagHoisting()">🇮🇳 ध्वजारोहण व बिगुल</button>
+        <button class="btn btn-amber" onclick="playVandeMataramMelody()">🎶 वंदे मातरम् धुन</button>
+      </div>
+
+      <section class="memories">
+        <div class="grid">
+          <div class="card">
+            <div>🏫</div>
+            <h4>प्रातःकालीन प्रार्थना सभा</h4>
+            <p>सफ़ेद वर्दी, चॉक से चमकाए सफेद कैनवास जूते, कतारबद्ध प्रार्थना और प्रधानाचार्य जी का भाषण।</p>
+          </div>
+          <div class="card">
+            <div>🍬</div>
+            <h4>कागज़ी लिफ़ाफ़े के लड्डू</h4>
+            <p>ध्वजारोहण के ठीक बाद अखबार या भूरे लिफाफे में मिलने वाले ताज़ा बूंदी के 2 पीले लड्डू।</p>
+          </div>
+          <div class="card">
+            <div>🪁</div>
+            <h4>छत पर पतंगबाज़ी</h4>
+            <p>दोपहर ढलते ही मोहल्ले की छतों पर पतंगों के पेच और आसमान में गूंजता ‘आई बो.. वो काटा!’</p>
+          </div>
+          <div class="card">
+            <div>📻</div>
+            <h4>दूरदर्शन व रेडियो के गीत</h4>
+            <p>सुबह 7 बजे से बजता 'मिले सुर मेरा तुम्हारा' और लता जी का 'ऐ मेरे वतन के लोगों'।</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="player-bar">
+      <div>
+        <div class="player-title">देशभक्ति संगीत धारा (Patriotic Playlist)</div>
+        <div class="player-sub">YouTube Playlist • PLQE9hx8mq0W4</div>
+      </div>
+      <a href="https://youtube.com/playlist?list=PLQE9hx8mq0W4&si=sr5aZSce665qqPJD" target="_blank" style="color:#f87171; text-decoration:none; font-weight:bold; font-size:13px;">
+        YouTube पर सुनें ↗
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // 1. Web Audio Synthesizer (Acoustic Bugle & Shehnai)
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioCtx();
+
+    function playBugleReveille() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+      [392, 523.25, 659.25, 783.99].forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.2);
+        gain.gain.setValueAtTime(0.18, now + idx * 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.2 + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + idx * 0.2);
+        osc.stop(now + idx * 0.2 + 0.35);
+      });
+    }
+
+    function playVandeMataramMelody() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+      const notes = [
+        { f: 369.99, d: 0.45 }, { f: 440.00, d: 0.50 }, { f: 554.37, d: 0.65 },
+        { f: 493.88, d: 0.40 }, { f: 440.00, d: 0.70 }, { f: 329.63, d: 0.35 },
+        { f: 369.99, d: 0.38 }, { f: 440.00, d: 0.60 }
+      ];
+      let t = now;
+      notes.forEach(({ f, d }) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, t);
+        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + d);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + d);
+        t += d;
+      });
+    }
+
+    function playFlagHoisting() {
+      playBugleReveille();
+      showerFlowers();
+    }
+
+    // 2. 24 Spokes in Ashoka Chakra
+    const g = document.getElementById('chakraSpokes');
+    for (let i = 0; i < 24; i++) {
+      const rad = ((i * 360) / 24 * Math.PI) / 180;
+      const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', '50'); l.setAttribute('y1', '50');
+      l.setAttribute('x2', (50 + 44 * Math.cos(rad)).toFixed(2));
+      l.setAttribute('y2', (50 + 44 * Math.sin(rad)).toFixed(2));
+      l.setAttribute('stroke', '#000088'); l.setAttribute('stroke-width', '1.6');
+      g.appendChild(l);
+    }
+
+    // 3. Canvas Kites & Falling Petals
+    const canvas = document.getElementById('skyCanvas');
+    const ctx = canvas.getContext('2d');
+    let kites = [];
+    let petals = [];
+    let count = 5;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function launchKite() {
+      count++;
+      document.getElementById('kiteCount').innerText = count;
+      kites.push({
+        x: Math.random() * canvas.width, y: canvas.height + 40,
+        s: 36, vx: (Math.random() - 0.5) * 1.5, vy: -(1.8 + Math.random() * 2)
+      });
+    }
+
+    function showerFlowers() {
+      for (let i = 0; i < 35; i++) {
+        petals.push({
+          x: Math.random() * canvas.width, y: -20,
+          s: 7 + Math.random() * 8, vx: (Math.random() - 0.5) * 2, vy: 1.5 + Math.random() * 2,
+          c: ['#f43f5e', '#f59e0b', '#fbbf24', '#ffffff'][Math.floor(Math.random() * 4)]
+        });
+      }
+    }
+
+    for (let i = 0; i < 5; i++) {
+      kites.push({ x: Math.random() * canvas.width, y: Math.random() * (canvas.height * 0.7), s: 36, vx: 0.5, vy: -1.2 });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Kites
+      for (let i = kites.length - 1; i >= 0; i--) {
+        const k = kites[i];
+        k.x += k.vx; k.y += k.vy;
+        ctx.fillStyle = '#ff9933';
+        ctx.beginPath();
+        ctx.moveTo(k.x, k.y - k.s); ctx.lineTo(k.x + k.s*0.8, k.y);
+        ctx.lineTo(k.x, k.y + k.s); ctx.lineTo(k.x - k.s*0.8, k.y);
+        ctx.fill();
+        if (k.y < -80) { k.y = canvas.height + 40; k.x = Math.random() * canvas.width; }
+      }
+      // Petals
+      for (let i = petals.length - 1; i >= 0; i--) {
+        const p = petals[i];
+        p.x += p.vx; p.y += p.vy;
+        ctx.fillStyle = p.c;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+        ctx.fill();
+        if (p.y > canvas.height + 20) petals.splice(i, 1);
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Spacebar listener
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.key === 'f') {
+        e.preventDefault();
+        launchKite();
+        showerFlowers();
+      }
+    });
+  </script>
+</body>
+</html>
